@@ -1,0 +1,6 @@
+{
+  "nombre": "home",
+  "descripcion": "Dashboard del sitio web",
+  "require": ["users"],
+  "version": 0.1
+}
