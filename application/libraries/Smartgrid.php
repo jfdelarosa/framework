@@ -164,7 +164,7 @@ class Smartgrid {
         
         empty($config) OR $this->set_configs($config);
         
-        $this->_current_url = current_url(); 
+        $this->_current_url = str_replace("/index.php", "", current_url());
         //$this->_current_url .= $_SERVER['QUERY_STRING'] ? '?'.$_SERVER['QUERY_STRING'] : '';
         
         $page_number = $this->CI->input->get_post($this->_config_grid_name.'page', TRUE);
@@ -192,7 +192,7 @@ class Smartgrid {
     public function render_grid()
     {
         $this->set_debug_time('render_start_time');
-        $paging_html = ($this->_config_paging_enabled === true && $this->_total_rows > $this->_config_page_size) ? '<div class="panel-body no-margin" style="padding: 5px;">'.$this->get_toolbar().'</div>' : '';
+        $paging_html = ($this->_config_paging_enabled === true && $this->_total_rows > $this->_config_page_size) ? '<div class="panel-body no-margin" style="overflow: hidden;">'.$this->get_toolbar().'</div>' : '';
         $html = '';
         if($this->_dataset && count($this->_dataset) > 0)
         {
@@ -265,20 +265,35 @@ class Smartgrid {
     {
         $this->_page_number = $this->_page_number < 1 ? 1 : $this->_page_number;
         $this->_page_row_start = ($this->_page_number - 1) * $this->_config_page_size;
-        
+        $order = $this->CI->input->get_post($this->_config_grid_name.'order', TRUE);
+        $sort = ($this->CI->input->get_post($this->_config_grid_name.'sort', TRUE) == 1) ? SORT_DESC : SORT_ASC;
+
         if(is_array($data_or_sql))
         {
             $this->_sql = '';
-            $this->_dataset = ($this->_config_paging_enabled === true) ? array_slice($data_or_sql, $this->_page_row_start, $this->_config_page_size) : $data_or_sql; //$data_or_sql;  
             $this->_total_rows = count($data_or_sql);
-            $this->_page_row_count = count($this->_dataset);
+            $dataset = ($this->_config_paging_enabled === true) ? array_slice($data_or_sql, $this->_page_row_start, $this->_config_page_size) : $data_or_sql;
+            $this->_page_row_count = count($dataset);
+            
+            
+            if(isset($order)){
+              usort($dataset, $this->make_comparer([$order, $sort]));
+            }
+
+            $this->_dataset = $dataset;
         }
         else
         {
             $this->_sql = $data_or_sql;
             $this->CI->load->database();
             $sql = $this->make_query($this->_sql);
-            $sql .= ($this->_config_paging_enabled === true) ? " LIMIT {$this->_page_row_start}, {$this->_config_page_size} " : ''; 
+            
+            if(isset($order)){
+              $sort = ($this->CI->input->get_post($this->_config_grid_name.'sort', TRUE) == 1) ? "DESC " : "ASC ";
+              $sql .= " ORDER BY " . $order . " " . $sort;
+            }
+
+            $sql .= ($this->_config_paging_enabled === true) ? " LIMIT {$this->_page_row_start}, {$this->_config_page_size} " : '';
             $query = $this->CI->db->query($sql);
             $this->_dataset = $query->result_array();
             $this->_page_row_count = $query->num_rows();
@@ -309,10 +324,23 @@ class Smartgrid {
         $html = '<thead><tr role="row">';
         foreach ($this->_columns as $field=>$c)
         {
+            $sort = 1;
+            $angle = "";
+            if($this->CI->input->get_post($this->_config_grid_name.'order', TRUE) == $field){
+              if($this->CI->input->get_post($this->_config_grid_name.'sort', TRUE) == 0){
+                $sort = 1;
+                $angle = ' <i class="fa fa-angle-up"></i>';
+              }else{
+                $sort = 0;
+                $angle = ' <i class="fa fa-angle-down"></i>';
+              }
+            }
+//
             $header_align = isset($c['header_align']) ? $c['header_align'] : '';
             $width = isset($c['width']) ? $c['width'] : '';
             $html .= '<th width="'.$width.'" align="'.$header_align.'" style="text-align: '.$header_align.'" >';  
-            $html .= $c["header"];
+            $html .= '<a href="?order='.$field.'&sort='.$sort.'">'.$c["header"].$angle.'</a>';
+            //$html .= $c["header"];
             $html .='</th>';
         }
         $html .= '</tr></thead>';
@@ -477,7 +505,7 @@ class Smartgrid {
         
         $previous_page_number = $this->_page_number - 1;
         $previous_page_number = ($previous_page_number < 0) ? 0 : $previous_page_number;
-        
+
         $paging_html = '';
         $paging_html .= '<form method="'.$this->_config_grid_form_method.'" action="'.$this->_current_url.'">';
         foreach ($http_vars as $key=>$val){
@@ -679,5 +707,44 @@ class Smartgrid {
         list($sec, $usec) = explode('.', $microtime);
         $usec = str_replace("0.", ".", $usec); //remove the leading '0.' from usec
         return date('H:i:s', $sec) . round($usec, 6);
+    }
+
+    function make_comparer()
+    {
+      // Normalize criteria up front so that the comparer finds everything tidy
+      $criteria = func_get_args();
+      foreach ($criteria as $index => $criterion) {
+          $criteria[$index] = is_array($criterion)
+              ? array_pad($criterion, 3, null)
+              : array($criterion, SORT_ASC, null);
+      }
+
+      return function($first, $second) use (&$criteria) {
+          foreach ($criteria as $criterion) {
+              // How will we compare this round?
+              list($column, $sortOrder, $projection) = $criterion;
+              $sortOrder = $sortOrder === SORT_DESC ? -1 : 1;
+
+              // If a projection was defined project the values now
+              if ($projection) {
+                  $lhs = call_user_func($projection, $first[$column]);
+                  $rhs = call_user_func($projection, $second[$column]);
+              }
+              else {
+                  $lhs = $first[$column];
+                  $rhs = $second[$column];
+              }
+
+              // Do the actual comparison; do not return if equal
+              if ($lhs < $rhs) {
+                  return -1 * $sortOrder;
+              }
+              else if ($lhs > $rhs) {
+                  return 1 * $sortOrder;
+              }
+          }
+
+          return 0; // tiebreakers exhausted, so $first == $second
+      };
     }
 }
