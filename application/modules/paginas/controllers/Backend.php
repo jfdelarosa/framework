@@ -22,10 +22,27 @@ class Backend extends CI_Controller {
 
 
   public function index(){
+    $this->load->library('Smartgrid');
+ 
     $this->breadcrumbs->push('Paginas', '/backend/paginas/');
     $this->breadcrumbs->show();
 
-    $this->data['paginas'] = $this->paginas_model->get_paginas();
+    $tabla = $this->paginas_model->get_paginas(); 
+
+    $columns = array(
+      "page_id"           => array("header" => "ID",                "type"=>"label"),
+      "page_title"        => array("header" => "Titulo",            "type"=>"custom", "field_data" => "<a href='editar/{page_id}'>{page_title}</a>"),
+      "page_created"      => array("header" => "Fecha de creación", "type"=>"relativedate"),
+      "page_created_by"   => array("header" => "Creada por",        "type"=>"label"),
+      "page_edited_count" => array("header" => "Ediciones",         "type"=>"label"),
+      "page_edited"       => array("header" => "Última edición",    "type"=>"relativedate"),
+      "page_edited_by"    => array("header" => "Editada por",       "type"=>"label"),
+      "page_status"       => array("header" => "Status",            "type"=>"status")
+    );        
+        
+    $this->smartgrid->set_grid($tabla, $columns);
+    $this->data['tabla'] = $this->smartgrid->render_grid();
+
     $this->data['content'] = $this->load->view('../../views/ver_paginas', $this->data, true);
     $this->load->view(TEMPLATE_URL, $this->data);
   }
