@@ -16,6 +16,16 @@
     <?php echo link_tag('assets/css/simple-line-icons.css'); ?>
     <!-- Main styles for this application -->
     <?php echo link_tag('assets/css/style.css'); ?>
+    <?php echo link_tag('assets/js/trevor/sir-trevor.css'); ?>
+    <?php echo link_tag('assets/js/trevor/sir-trevor-bootstrap.css'); ?>
+    <?php echo link_tag('assets/js/trevor/sir-trevor-icons.css'); ?>
+
+    <?php if(isset($styles)){
+        foreach($styles as $css){
+            echo link_tag($css);
+        }
+    }
+    ?>
 </head>
 
 <!-- BODY options, add following classes to body to change options
@@ -107,21 +117,49 @@
     </div>
 
     <footer class="app-footer">
-        <a href="http://coreui.io">CoreUI</a> © 2017 creativeLabs.
+        Creado por <a href="http://jfdelarosa.me">jfdelarosa</a> - © <?php echo date("Y"); ?>
         <span class="float-right">Powered by <a href="http://coreui.io">CoreUI</a>
         </span>
     </footer>
 
-    <script src="/assets/bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="/assets/bower_components/popper.js/index.js"></script>
-    <script src="/assets/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="/assets/bower_components/pace/pace.min.js"></script>
-    <script src="/assets/js/app.js"></script>
-    <?php if(isset($scripts)): ?>
-    <?php foreach($scripts as $js): ?>
-    <script src="<?php echo $js; ?>"></script>
-    <?php endforeach; ?>
+    <?php echo script_tag("/assets/bower_components/jquery/dist/jquery.min.js"); ?>
+    <?php echo script_tag("/assets/bower_components/popper/index.js"); ?>
+    <?php echo script_tag("/assets/bower_components/bootstrap/dist/js/bootstrap.min.js"); ?>
+    <?php echo script_tag("/assets/js/trevor/underscore.js"); ?>
+    <?php echo script_tag("/assets/js/trevor/eventable.js"); ?>
+    <?php echo script_tag("/assets/js/trevor/sortable.min.js"); ?>
+    <?php echo script_tag("/assets/js/trevor/sir-trevor.js"); ?>
+    <?php echo script_tag("/assets/js/trevor/sir-trevor-bootstrap.js"); ?>
+
+    <?php if($modulo == "paginas"): ?>
+    <script>var paginaId = <?php echo (isset($page_id)) ? $page_id : "null"; ?>;</script>
     <?php endif; ?>
+
+    <?php echo script_tag("/assets/js/app.js"); ?>
+
+    <?php
+    if(isset($scripts)){
+        foreach($scripts as $js){
+            echo script_tag($js);
+        }
+    }
+    ?>
+
+<?php
+    $caller_class = $this->router->class;
+    $caller_method = $this->router->fetch_method();
+
+    $class_js = base_url("folder/assets/".$modulo."/script.js");
+    $class_method_js = base_url("folder/assets/".$modulo."/".$caller_method.".js");
+
+    if(file_get_contents($class_js)){
+        echo script_tag($class_js);
+    }
+    if(file_get_contents($class_method_js)){
+        echo script_tag($class_method_js);
+    }
+?>
+
 
 </body>
 

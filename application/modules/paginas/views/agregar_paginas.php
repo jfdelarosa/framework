@@ -11,7 +11,7 @@
 </ul>
 <div class="tab-content">
   <div class="tab-pane active">
-    <?php echo form_open('backend/paginas/agregar'); ?>
+    <?php echo form_open('backend/paginas/agregar', array('id' => 'paginas')); ?>
       <div class="form-group">
         <label for="page-title">Titulo</label>
         <input class="form-control" name="page-title" id="page-title" value="<?php echo set_value('page-title'); ?>" placeholder="Ingresa el titulo de la pagina." />
@@ -24,11 +24,11 @@
       </div>
       <div class="form-group">
         <label for="page-content">Contenido</label>
-        <textarea name="page-content" id="page-content" class="form-control" placeholder="Ingresa el contenido de la pagina."><?php echo set_value('page-content'); ?></textarea>
+        <textarea name="page-content" id="page-content" class="js-st-instance"><?php echo set_value('page-content'); ?></textarea>
+        <!-- <textarea name="page-content" id="page-content" class="form-control" placeholder="Ingresa el contenido de la pagina."><?php echo set_value('page-content'); ?></textarea> -->
         <?php echo form_error('page-content'); ?>
       </div>
-      <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i> Submit</button>
-      <button type="reset" class="btn btn-sm btn-danger"><i class="fa fa-ban"></i> Reset</button>
+      <button type="submit" class="btn btn-sm btn-primary"><i class="fa fa-dot-circle-o"></i> Guardar página</button>
     <?php echo form_close(); ?>
   </div>
 </div>

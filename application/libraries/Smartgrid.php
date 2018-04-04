@@ -396,7 +396,7 @@ class Smartgrid {
                 $field_href = isset($c['href']) && !empty($c['href']) ? $this->CI->parser->parse_string($c['href'], $r, TRUE) : $field_value;
                 $field_value = isset($c['link_name']) && !empty($c['link_name']) ? $c['link_name'] : $field_value;
                 $field_target = isset($c['target']) ? $c['target'] : '';
-                $html .= '<a href="'.$field_href.'" target="'.$field_target.'">'.$field_value.'</a>'; 
+                $html .= '<a href="'.base_url($field_href).'" target="'.$field_target.'">'.$field_value.'</a>'; 
                 break;
             
             case "custom":
@@ -446,9 +446,20 @@ class Smartgrid {
             
             case "relativedate":
                 $this->CI->load->helper('date');
-                $html .= '<span data-toggle="tooltip" data-placement="top" title="'.$this->get_date_spanish($field_value).'">';
-                $html .= $this->get_relative_date($field_value);
-                $html .= '</span>';
+                if($field_value != 0){
+                    $html .= '<span data-toggle="tooltip" data-placement="top" title="'.$this->get_date_spanish($field_value).'">';
+                    $html .= $this->get_relative_date($field_value);
+                    $html .= '</span>';
+                }
+                break;
+
+            case "customdate":
+                $this->CI->load->helper('date');
+                if($field_value != 0 && $r['page_edited_count'] > 0){
+                    $html .= '<span data-toggle="tooltip" data-placement="top" title="'.$this->get_date_spanish($field_value).'">';
+                    $html .= $this->get_relative_date($field_value);
+                    $html .= '</span>';
+                }
                 break;
             
             case "money": 
@@ -616,7 +627,7 @@ class Smartgrid {
                 if($diff < 120) return 'Hace 1 minuto';
                 if($diff < 3600) return 'Hace ' . floor($diff / 60) . ' minutos';
                 if($diff < 7200) return 'Hace 1 hora';
-                if($diff < 86400) return 'Hace ' - floor($diff / 3600) . ' horas';
+                if($diff < 86400) return 'Hace ' . floor($diff / 3600) . ' horas';
             }
             if($day_diff == 1) { return 'Ayer'; }
             if($day_diff < 7) { return 'Hace ' . $day_diff . ' días'; }

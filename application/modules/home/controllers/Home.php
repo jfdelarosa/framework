@@ -5,19 +5,19 @@ class Home extends CI_Controller {
 
   public function __construct(){
     parent::__construct();
+    Admin_helper::is_admin($this->session->userdata('rol_id'));
+    
     $this->load->helper('html');
-
     $this->load->library('breadcrumbs');
+
+
     $this->breadcrumbs->push('Home', '/backend/');
 
     $this->data = array(
+      "modulo"=> "home",
       "title" => "Inicio",
       "menu"  => menu_backend('home')
     );
-
-    if($this->session->userdata('rol_id') == FALSE || $this->session->userdata('rol_id') != 1){
-      redirect('../login');
-    }
 
   }
 

@@ -73,7 +73,7 @@ if ( ! function_exists('form_open'))
 		// If an action is not a full URL then turn it into one
 		elseif (strpos($action, '://') === FALSE)
 		{
-			$action = $CI->config->site_url($action);
+			$action = $CI->config->base_url($action);
 		}
 
 		$attributes = _attributes_to_string($attributes);

@@ -50,6 +50,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |		my-controller/my-method	-> my_controller/my_method
 */
 $route['default_controller'] = 'Paginas';
+$route['paginas/(:any)'] = "paginas/index/$1";
 $route['backend/(:any)'] = '$1/backend';
 $route['backend/(:any)/(:any)'] = '$1/backend/$2';
 $route['backend/(:any)/(:any)/(:any)'] = '$1/backend/$2/$3';

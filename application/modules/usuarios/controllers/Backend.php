@@ -6,6 +6,8 @@ class Backend extends CI_Controller {
   public function __construct(){
     parent::__construct();
 
+    Admin_helper::is_admin($this->session->userdata('rol_id'));
+
     $this->load->library('breadcrumbs');
     $this->breadcrumbs->push('Home', '/backend/');
 
@@ -20,10 +22,21 @@ class Backend extends CI_Controller {
 
 
   public function index(){
+    $this->load->library('Smartgrid');
+
     $this->breadcrumbs->push('Paginas', '/backend/usuarios/');
     $this->breadcrumbs->show();
 
-    $this->data['usuarios'] = array();
+
+    $columns = array(
+      "id"     => array("header" => "ID",    "type" => "label"),
+      "fecha"  => array("header" => "fecha", "type" => "label"),
+      "texto"  => array("header" => "texto", "type" => "label")
+    );        
+        
+    $this->smartgrid->set_grid("SELECT * FROM test", $columns);
+    $this->data['tabla'] = $this->smartgrid->render_grid();
+
     $this->data['content'] = $this->load->view('../../views/ver_usuarios', $this->data, true);
     $this->load->view(TEMPLATE_URL, $this->data);
   }

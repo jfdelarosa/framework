@@ -29,8 +29,8 @@ class Usuarios extends CI_Controller {
       }else{
         $user_data = $this->users_model->get_data($check_user);
         $data = array(
-          'is_logued_in'  =>  TRUE,
-          'user_id'       =>  $user_data->user_id,
+          'is_logged_in'  =>  TRUE,
+          'user_id'       =>  $check_user,
           'rol_id'        =>  $user_data->rol_id,
           'user_username' =>  $user_data->user_username
         );
@@ -44,8 +44,10 @@ class Usuarios extends CI_Controller {
   }
 
   public function logout(){
-    $this->session->unset_userdata('isUserLoggedIn');
-    $this->session->unset_userdata('userId');
+    $this->session->unset_userdata('is_logged_in');
+    $this->session->unset_userdata('user_id');
+    $this->session->unset_userdata('rol_id');
+    $this->session->unset_userdata('user_username');
     $this->session->sess_destroy();
     redirect('../login');
   }

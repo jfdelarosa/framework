@@ -5,6 +5,8 @@ class Backend extends CI_Controller {
 
   public function __construct(){
     parent::__construct();
+    
+    Admin_helper::is_admin($this->session->userdata('rol_id'));
 
     $this->load->library('breadcrumbs');
     $this->breadcrumbs->push('Home', '/backend/');
