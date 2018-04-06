@@ -18,7 +18,7 @@
     <?php echo link_tag('assets/themes/' . THEME . '/css/clean-blog.min.css'); ?>
 
   </head>
-
+  
   <body>
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-light fixed-top" id="mainNav">

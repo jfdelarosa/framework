@@ -126,7 +126,27 @@ function init(url) {
   $('[rel="popover"],[data-rel="popover"],[data-toggle="popover"]').popover();
 }
 
-new SirTrevor.Editor({ el: $('.js-st-instance'),
-  blockTypes: ["Columns", "Heading", "Text", "ImageExtended", "Quote", "Accordion", "Button", "Video", "List", "Iframe"]
-});
-SirTrevor.onBeforeSubmit();
+(function() {
+  var t;
+  window.onmousemove = resetTimer;
+  window.onmousedown = resetTimer;
+  window.onclick = resetTimer;
+  window.onscroll = resetTimer;
+  window.onkeypress = resetTimer;
+
+  function logout() {
+    console.log("TODO: Modal para login");
+  }
+
+  function resetTimer() {
+    clearTimeout(t);
+    t = setTimeout(logout, 1000 * 60 * 10);
+  }
+})();
+
+if($('.js-st-instance').length == 1){
+  new SirTrevor.Editor({ el: $('.js-st-instance'),
+    blockTypes: ["Columns", "Heading", "Text", "ImageExtended", "Quote", "Accordion", "Button", "Video", "List", "Iframe"]
+  });
+  SirTrevor.onBeforeSubmit();
+}
