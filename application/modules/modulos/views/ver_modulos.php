@@ -3,7 +3,7 @@
 <div class="col-sm-6 col-md-4">
   <div class="card">
     <div class="card-header">
-      <?php echo $modulo['nombre']; ?>
+      <h3 class="card-title"><?php echo $modulo['nombre']; ?></h3>
     </div>
     <div class="card-body">
       <p><?php echo $modulo['descripcion']; ?></p>

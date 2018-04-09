@@ -1,5 +1,5 @@
 <?php
 return $items['Inicio'] = array(
-  'icon'   => '<i class="icon-speedometer"></i>',
+  'icon'   => '<i class="fas fa-home"></i>',
   'url'  => '/backend/'
 );

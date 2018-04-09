@@ -1,24 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="CoreUI - Open Source Bootstrap Admin Template">
-    <meta name="author" content="Łukasz Holeczek">
-    <meta name="keyword" content="Bootstrap,Admin,Template,Open,Source,AngularJS,Angular,Angular2,Angular 2,Angular4,Angular 4,jQuery,CSS,HTML,RWD,Dashboard,React,React.js,Vue,Vue.js">
-    <?php echo link_tag('img/favicon.png', 'shortcut icon'); ?>
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta http-equiv="Content-Language" content="en" />
+    <meta name="msapplication-TileColor" content="#2d89ef">
+    <meta name="theme-color" content="#4188c9">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <?php echo link_tag('img/favicon.ico', 'shortcut icon'); ?>
     <title><?php echo $title; ?></title>
-
-    <!-- Icons -->
-    <?php echo link_tag('assets/css/font-awesome.min.css'); ?>
-    <?php echo link_tag('assets/css/simple-line-icons.css'); ?>
-    <!-- Main styles for this application -->
-    <?php echo link_tag('assets/css/style.css'); ?>
+    <?php echo link_tag('https://use.fontawesome.com/releases/v5.0.9/css/all.css'); ?>
+    <?php echo link_tag('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i,500,500i,600,600i,700,700i&amp;subset=latin-ext'); ?>
+    <?php echo link_tag('assets/css/dashboard.css'); ?>
     <?php echo link_tag('assets/js/trevor/sir-trevor.css'); ?>
     <?php echo link_tag('assets/js/trevor/sir-trevor-bootstrap.css'); ?>
     <?php echo link_tag('assets/js/trevor/sir-trevor-icons.css'); ?>
+
+    <?php echo script_tag('assets/js/require.min.js'); ?>
+    
+    <script>
+      requirejs.config({
+          baseUrl: '/'
+      });
+    </script>
+    <?php echo script_tag('assets/js/dashboard.js'); ?>
 
     <?php if(isset($styles)){
         foreach($styles as $css){
@@ -26,141 +36,205 @@
         }
     }
     ?>
-</head>
 
-<!-- BODY options, add following classes to body to change options
-
-// Header options
-1. '.header-fixed'					- Fixed Header
-
-// Sidebar options
-1. '.sidebar-fixed'					- Fixed Sidebar
-2. '.sidebar-hidden'				- Hidden Sidebar
-3. '.sidebar-off-canvas'		- Off Canvas Sidebar
-4. '.sidebar-minimized'			- Minimized Sidebar (Only icons)
-5. '.sidebar-compact'			  - Compact Sidebar
-
-// Aside options
-1. '.aside-menu-fixed'			- Fixed Aside Menu
-2. '.aside-menu-hidden'			- Hidden Aside Menu
-3. '.aside-menu-off-canvas'	- Off Canvas Aside Menu
-
-// Breadcrumb options
-1. '.breadcrumb-fixed'			- Fixed Breadcrumb
-
-// Footer options
-1. '.footer-fixed'					- Fixed footer
-
--->
-
-<body class="app header-fixed sidebar-fixed aside-menu-fixed aside-menu-hidden">
-    <header class="app-header navbar">
-        <button class="navbar-toggler mobile-sidebar-toggler d-lg-none mr-auto" type="button">☰</button>
-        <a class="navbar-brand" href="#"></a>
-        <ul class="nav navbar-nav ml-auto">
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                    <img src="http://coreui.io/demo/Ajax_Demo/img/avatars/6.jpg" class="img-avatar" alt="admin@bootstrapmaster.com">
-                    <span class="d-md-down-none"><?php echo $this->session->user_username; ?></span>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right">
-                    <div class="dropdown-header text-center">
-                        <strong>Account</strong>
-                    </div>
-                    <a class="dropdown-item" href="#"><i class="fa fa-bell-o"></i> Updates<span class="badge badge-info">42</span></a>
-                    <a class="dropdown-item" href="#"><i class="fa fa-envelope-o"></i> Messages<span class="badge badge-success">42</span></a>
-                    <a class="dropdown-item" href="#"><i class="fa fa-tasks"></i> Tasks<span class="badge badge-danger">42</span></a>
-                    <a class="dropdown-item" href="#"><i class="fa fa-comments"></i> Comments<span class="badge badge-warning">42</span></a>
-                    <div class="dropdown-header text-center">
-                        <strong>Settings</strong>
-                    </div>
-                    <a class="dropdown-item" href="#"><i class="fa fa-user"></i> Profile</a>
-                    <a class="dropdown-item" href="#"><i class="fa fa-wrench"></i> Settings</a>
-                    <a class="dropdown-item" href="#"><i class="fa fa-usd"></i> Payments<span class="badge badge-secondary">42</span></a>
-                    <a class="dropdown-item" href="#"><i class="fa fa-file"></i> Projects<span class="badge badge-primary">42</span></a>
-                    <div class="divider"></div>
-                    <a class="dropdown-item" href="#"><i class="fa fa-shield"></i> Lock Account</a>
-                    <a class="dropdown-item" href="/backend/login/logout/"><i class="fa fa-lock"></i> Logout</a>
+  </head>
+  <body class="">
+    <div class="page">
+      <div class="page-main">
+        <div class="header py-4">
+          <div class="container">
+            <div class="d-flex">
+              <a class="header-brand" href="./index.html">
+                <img src="./demo/brand/tabler.svg" class="header-brand-img" alt="tabler logo">
+              </a>
+              <div class="d-flex order-lg-2 ml-auto">
+                <div class="nav-item d-none d-md-flex">
+                  <a href="https://github.com/tabler/tabler" class="btn btn-sm btn-outline-primary" target="_blank">Source code</a>
                 </div>
-            </li>
-        </ul>
-        <button class="navbar-toggler sidebar-minimizer d-md-down-none" type="button">☰</button>
-
-    </header>
-
-    <div class="app-body">
-        <div class="sidebar">
-            <nav class="sidebar-nav">
-                <?php echo $menu; ?>
-            </nav>
-        </div>
-
-        <!-- Main content -->
-        <main class="main">
-            <?php echo $this->breadcrumbs->show(); ?>
-            <div class="container-fluid">
-                <?php if(isset($alert)): ?>
-                <div class="card text-white text-center <?php echo $alert['type']; ?>">
-                    <div class="card-body">
-                      <?php echo $alert['text']; ?>
-                    </div>
+                <div class="dropdown d-none d-md-flex">
+                  <a class="nav-link icon" data-toggle="dropdown">
+                    <i class="fe fe-bell"></i>
+                    <span class="nav-unread"></span>
+                  </a>
+                  <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                    <a href="#" class="dropdown-item d-flex">
+                      <span class="avatar mr-3 align-self-center" style="background-image: url(demo/faces/male/41.jpg)"></span>
+                      <div>
+                        <strong>Nathan</strong> pushed new commit: Fix page load performance issue.
+                        <div class="small text-muted">10 minutes ago</div>
+                      </div>
+                    </a>
+                    <a href="#" class="dropdown-item d-flex">
+                      <span class="avatar mr-3 align-self-center" style="background-image: url(demo/faces/female/1.jpg)"></span>
+                      <div>
+                        <strong>Alice</strong> started new task: Tabler UI design.
+                        <div class="small text-muted">1 hour ago</div>
+                      </div>
+                    </a>
+                    <a href="#" class="dropdown-item d-flex">
+                      <span class="avatar mr-3 align-self-center" style="background-image: url(demo/faces/female/18.jpg)"></span>
+                      <div>
+                        <strong>Rose</strong> deployed new version of NodeJS REST Api V3
+                        <div class="small text-muted">2 hours ago</div>
+                      </div>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item text-center text-muted-dark">Mark all as read</a>
+                  </div>
                 </div>
-                <?php endif; ?>
-                <?php echo (isset($content)) ? $content : ""; ?>
-
-
+                <div class="dropdown">
+                  <a href="#" class="nav-link pr-0 leading-none" data-toggle="dropdown">
+                    <span class="avatar" style="background-image: url(./demo/faces/female/25.jpg)"></span>
+                    <span class="ml-2 d-none d-lg-block">
+                      <span class="text-default"><?php echo $this->session->user_username; ?></span>
+                      <small class="text-muted d-block mt-1">Administrator</small>
+                    </span>
+                  </a>
+                  <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                    <a class="dropdown-item" href="#">
+                      <i class="dropdown-icon fe fe-user"></i> Profile
+                    </a>
+                    <a class="dropdown-item" href="#">
+                      <i class="dropdown-icon fe fe-settings"></i> Settings
+                    </a>
+                    <a class="dropdown-item" href="#">
+                      <span class="float-right"><span class="badge badge-primary">6</span></span>
+                      <i class="dropdown-icon fe fe-mail"></i> Inbox
+                    </a>
+                    <a class="dropdown-item" href="#">
+                      <i class="dropdown-icon fe fe-send"></i> Message
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">
+                      <i class="dropdown-icon fe fe-help-circle"></i> Need help?
+                    </a>
+                    <a class="dropdown-item" href="#">
+                      <i class="dropdown-icon fe fe-log-out"></i> Sign out
+                    </a>
+                  </div>
+                </div>
+              </div>
+              <a href="#" class="header-toggler d-lg-none ml-3 ml-lg-0" data-toggle="collapse" data-target="#headerMenuCollapse">
+                <span class="header-toggler-icon"></span>
+              </a>
             </div>
-            <!-- /.conainer-fluid -->
-        </main>
-
-
+          </div>
+        </div>
+        <div class="header collapse d-lg-flex p-0" id="headerMenuCollapse">
+          <div class="container">
+            <div class="row align-items-center">
+              <div class="col-lg-3 ml-auto">
+                <form class="input-icon my-3 my-lg-0">
+                  <input type="search" class="form-control header-search" placeholder="Search&hellip;" tabindex="1">
+                  <div class="input-icon-addon">
+                    <i class="fe fe-search"></i>
+                  </div>
+                </form>
+              </div>
+              <div class="col-lg order-lg-first">
+                <?php echo menu_backend($modulo); ?>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="my-3 my-md-5">
+          <div class="container">
+            <?php if(isset($alert)): ?>
+            <div class="card text-white text-center <?php echo $alert['type']; ?>">
+                <div class="card-body">
+                  <?php echo $alert['text']; ?>
+                </div>
+            </div>
+            <?php endif; ?>
+            <?php echo (isset($content)) ? $content : ""; ?>
+          </div>
+        </div>
+      </div>
+      <div class="footer">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-8">
+              <div class="row">
+                <div class="col-6 col-md-3">
+                  <ul class="list-unstyled mb-0">
+                    <li><a href="#">First link</a></li>
+                    <li><a href="#">Second link</a></li>
+                  </ul>
+                </div>
+                <div class="col-6 col-md-3">
+                  <ul class="list-unstyled mb-0">
+                    <li><a href="#">Third link</a></li>
+                    <li><a href="#">Fourth link</a></li>
+                  </ul>
+                </div>
+                <div class="col-6 col-md-3">
+                  <ul class="list-unstyled mb-0">
+                    <li><a href="#">Fifth link</a></li>
+                    <li><a href="#">Sixth link</a></li>
+                  </ul>
+                </div>
+                <div class="col-6 col-md-3">
+                  <ul class="list-unstyled mb-0">
+                    <li><a href="#">Other link</a></li>
+                    <li><a href="#">Last link</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4 mt-4 mt-lg-0">
+              Premium and Open Source dashboard template with responsive and high quality UI. For Free!
+            </div>
+          </div>
+        </div>
+      </div>
+      <footer class="footer">
+        <div class="container">
+          <div class="row align-items-center flex-row-reverse">
+            <div class="col-auto ml-lg-auto">
+              <div class="row align-items-center">
+                <div class="col-auto">
+                  <ul class="list-inline list-inline-dots mb-0">
+                    <li class="list-inline-item"><a href="./docs/index.html">Documentation</a></li>
+                    <li class="list-inline-item"><a href="./faq.html">FAQ</a></li>
+                  </ul>
+                </div>
+                <div class="col-auto">
+                  <a href="https://github.com/tabler/tabler" class="btn btn-outline-primary btn-sm">Source code</a>
+                </div>
+              </div>
+            </div>
+            <div class="col-12 col-lg-auto mt-3 mt-lg-0 text-center">
+              Copyright © 2018 <a href=".">Tabler</a>. Theme by <a href="https://codecalm.net" target="_blank">codecalm.net</a> All rights reserved.
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
-
-    <footer class="app-footer">
-        Creado por <a href="http://jfdelarosa.me">jfdelarosa</a> - © <?php echo date("Y"); ?>
-        <span class="float-right">Powered by <a href="http://coreui.io">CoreUI</a>
-        </span>
-    </footer>
-
-    <?php echo script_tag("/assets/bower_components/jquery/dist/jquery.min.js"); ?>
-    <?php echo script_tag("/assets/bower_components/popper/index.js"); ?>
-    <?php echo script_tag("/assets/bower_components/bootstrap/dist/js/bootstrap.min.js"); ?>
-    <?php echo script_tag("/assets/js/trevor/underscore.js"); ?>
-    <?php echo script_tag("/assets/js/trevor/eventable.js"); ?>
-    <?php echo script_tag("/assets/js/trevor/sortable.min.js"); ?>
-    <?php echo script_tag("/assets/js/trevor/sir-trevor.js"); ?>
-    <?php echo script_tag("/assets/js/trevor/sir-trevor-bootstrap.js"); ?>
-
     <?php if($modulo == "paginas"): ?>
     <script>var paginaId = <?php echo (isset($page_id)) ? $page_id : "null"; ?>;</script>
     <?php endif; ?>
 
-    <?php echo script_tag("/assets/js/app.js"); ?>
-
     <?php
     if(isset($scripts)){
-        foreach($scripts as $js){
-            echo script_tag($js);
-        }
-    }
+      foreach($scripts as $js){
     ?>
+      <script>require(["<?php echo $js; ?>"]); </script>  
+    <?php
+      }
+    }
 
-<?php
     $caller_class = $this->router->class;
     $caller_method = $this->router->fetch_method();
 
     $class_js = base_url("folder/assets/".$modulo."/script.js");
     $class_method_js = base_url("folder/assets/".$modulo."/".$caller_method.".js");
 
-    if(file_get_contents($class_js)){
-        echo script_tag($class_js);
-    }
-    if(file_get_contents($class_method_js)){
-        echo script_tag($class_method_js);
-    }
-?>
-
-
-</body>
-
+    if(file_get_contents($class_js)){ ?>
+      <script>require(["<?php echo $class_js; ?>"]); </script>
+    <?php }
+    if(file_get_contents($class_method_js)){ ?>
+      <script>require(["<?php echo $class_method_js; ?>"]); </script>
+    <?php }
+    ?>
+  </body>
 </html>

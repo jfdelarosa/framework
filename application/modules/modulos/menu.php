@@ -1,5 +1,5 @@
 <?php
 return $items['Módulos'] = array(
-  'icon'   => '<i class="icon-speedometer"></i>',
+  'icon'   => '<i class="fe fe-box"></i>',
   'url'  => '/backend/modulos'
 );

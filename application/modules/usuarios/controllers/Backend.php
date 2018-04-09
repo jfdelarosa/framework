@@ -15,8 +15,8 @@ class Backend extends CI_Controller {
     $this->load->helper('url_helper');
     
     $this->data = array(
-      "title" => "Administrar usuarios",
-      "menu"  => menu_backend('usuarios')
+      "modulo"=> "usuarios",
+      "title" => "Administrar usuarios"
     );
   }
 

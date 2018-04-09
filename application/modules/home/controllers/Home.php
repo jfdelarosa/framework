@@ -15,8 +15,7 @@ class Home extends CI_Controller {
 
     $this->data = array(
       "modulo"=> "home",
-      "title" => "Inicio",
-      "menu"  => menu_backend('home')
+      "title" => "Inicio"
     );
 
   }

@@ -199,7 +199,7 @@ class Smartgrid {
             $html .= '<div class="sg-panel">';
             $html .= ($this->_config_toolbar_position == 'top' || $this->_config_toolbar_position == 'both') ? $paging_html : '';
             $html .= '<div class="sg-body no-padding">';
-            $html .= '<table id="sg-table" class="table table-striped sg-table" cellspacing="0" width="100%">';
+            $html .= '<table id="sg-table" class="table table-hover table-outline table-vcenter text-nowrap card-table" cellspacing="0" width="100%">';
             $html .= $this->render_header();
             $html .= $this->render_rows();
             $html .= '</table></div>';
@@ -385,7 +385,7 @@ class Smartgrid {
         $field_value = (isset($c['strip_tag']) && $c['strip_tag'] == TRUE) ? strip_tags($r[$field_name]) : trim($r[$field_name]); 
         $field_type = $c['type'];
         $align = isset($c['align']) ? $c['align'] : '';
-        $html = '<td align="'.$align.'">';
+        $html = '<td align="'.$align.'" class="align-middle">';
         switch($field_type){
             case "label":
                 $html .= $field_value;
@@ -451,6 +451,10 @@ class Smartgrid {
                     $html .= $this->get_relative_date($field_value);
                     $html .= '</span>';
                 }
+                break;
+            
+            case "customtitle":
+                $html .= '<div><a href="/backend/paginas/editar/'.$r['page_id'].'">'.$field_value.'</a></div><div class="small text-muted">Última edición: ' . $this->get_relative_date($r['page_edited']) . '</div>';
                 break;
 
             case "customdate":

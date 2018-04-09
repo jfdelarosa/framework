@@ -1,4 +1,4 @@
-(function(){
+require(['jquery'], function($){
   var slug = function(str) {
     str = str.replace(/^\s+|\s+$/g, '');
     str = str.toLowerCase();
@@ -83,4 +83,4 @@
   $('#page-title').on('keyup', eventPageTitle);
   $('form').on('submit', eventFormSubmit);
 
-})();
+});

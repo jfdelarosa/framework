@@ -18,7 +18,6 @@ class Backend extends CI_Controller {
     $this->data = array(
       "modulo"  => "paginas",
       "title"   => "Administrar paginas",
-      "menu"    => menu_backend('paginas'),
       "scripts" => array("/assets/js/jquery.validate.min.js")
     );
   }
@@ -33,13 +32,17 @@ class Backend extends CI_Controller {
 
     $columns = array(
       //"page_id"           => array("header" => "ID",                "type" => "label"),
-      "page_title"        => array("header" => "Titulo",            "type" => "link", "href" => "backend/paginas/editar/{page_id}"),
-      "page_created"      => array("header" => "Fecha de creación", "type" => "relativedate"),
-      "page_created_by"   => array("header" => "Creada por",        "type" => "custom", "field_data" => "{created_by}"),
+      "page_title"        => array("header" => "Titulo",            "type" => "customtitle"),
+      "page_created_by"   => array("header" => "Creada por",        "type" => "custom", "field_data" => '<span class="avatar" title="{created_by}">JF</span>'),
       "page_edited_count" => array("header" => "Ediciones",         "type" => "label"),
-      "page_edited"       => array("header" => "Última edición",    "type" => "customdate"),
       "page_edited_by"    => array("header" => "Editada por",       "type" => "custom", "field_data" => "{edited_by}"),
-      "page_status"       => array("header" => "Status",            "type" => "status")
+      "page_status"       => array("header" => "Status",            "type" => "status"),
+      "page_slug"         => array("header" => "Opciones",          "type" => "custom", "field_data" => '
+      <div class="btn-group btn-group-sm">
+      <a href="/paginas/{page_slug}" target="_BLANK" class="btn btn-primary"><i class="fas fa-eye"></i></a>
+      <a href="paginas/editar/{page_id}" class="btn btn-success"><i class="far fa-edit"></i></a>
+      <button class="btn btn-danger"><i class="fas fa-trash"></i></button>
+      </div>')
     );        
         
     $this->smartgrid->set_grid($tabla, $columns);

@@ -16,6 +16,7 @@ class Backend extends CI_Controller {
     $this->load->helper('directory');
     
     $this->data = array(
+      "modulo"=> "modulos",
       "title" => 'Administrar módulos',
       "menu"  => menu_backend('Módulos')
     );

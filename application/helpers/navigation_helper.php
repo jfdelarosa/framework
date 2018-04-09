@@ -18,26 +18,24 @@ if ( ! function_exists('menu_backend'))
       }
     }
 
-    $menu = '<ul class="nav">'."\n";
+    $menu = '<ul class="nav nav-tabs border-0 flex-column flex-lg-row">'."\n";
     foreach($items as $key => $item){
       if(!array_key_exists("icon", $item)){ $item['icon'] = ""; }
       if(!array_key_exists("badge", $item)){ $item['badge'] = ""; }
-
-
-
-      $current = ($sel == $item['url']) ? 'active"' : '';
-      $dropdown = (array_key_exists("submenu", $item)) ? ' nav-dropdown' : '';
-      $dropdownToggle = (array_key_exists("submenu", $item)) ? ' nav-dropdown-toggle' : '';
+      
+      $asd = str_replace("/backend/", "", $item['url']);
+      $url = ($item['url']) ? $item['url'] : "javascript:void(0)";
+      $current = ($sel == $asd || ($sel == "home" && $asd == "")) ? ' active' : '';
+      $dropdown = (array_key_exists("submenu", $item)) ? ' dropdown' : '';
+      $dropdownToggle = (array_key_exists("submenu", $item)) ? 'data-toggle="dropdown"' : '';
       $menu .= '  <li class="nav-item'.$dropdown.'">'."\n";
-      $menu .= '    <a class="nav-link '.$current.$dropdownToggle.'" href="'.$item['url'].'">'.$item['icon'].$key.$item['badge'].'</a>'."\n";
+      $menu .= '    <a class="nav-link'.$current.'" '.$dropdownToggle.' href="'.$url.'">'.$item['icon'].$key.$item['badge'].'</a>'."\n";
       if(array_key_exists("submenu", $item)){
-        $menu .= '      <ul class="nav-dropdown-items">'."\n";
-        foreach($item['submenu'] as $key => $subitem){
-          $menu .= '        <li class="nav-item">'."\n";
-          $menu .= '          <a class="nav-link" href="'.$subitem['url'].'">'.$subitem['icon'].$key.'</a>'."\n";
-          $menu .= '        </li>'."\n";
+        $menu .= '      <div class="dropdown-menu dropdown-menu-arrow">'."\n";
+        foreach($item['submenu'] as $subkey => $subitem){
+          $menu .= '          <a class="dropdown-item" href="'.$subitem['url'].'">'.$subitem['icon'].$subkey.'</a>'."\n";
         }
-        $menu .= '      </ul>'."\n";
+        $menu .= '      </div>'."\n";
       }
       $menu .= '  </li>'."\n";
     }

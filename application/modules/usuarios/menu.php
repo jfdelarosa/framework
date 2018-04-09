@@ -1,5 +1,5 @@
 <?php
 return $items['Usuarios'] = array(
-  'icon'   => '<i class="icon-user"></i>',
+  'icon'   => '<i class="far fa-user-circle"></i>',
   'url'  => '/backend/usuarios'
 );
