@@ -12,7 +12,7 @@
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="HandheldFriendly" content="True">
     <meta name="MobileOptimized" content="320">
-    <?php echo link_tag('img/favicon.ico', 'shortcut icon'); ?>
+    <?php echo link_tag('assets/img/favicon.ico', 'shortcut icon'); ?>
     <title><?php echo $title; ?></title>
     <?php echo link_tag('https://use.fontawesome.com/releases/v5.0.9/css/all.css'); ?>
     <?php echo link_tag('https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i,500,500i,600,600i,700,700i&amp;subset=latin-ext'); ?>

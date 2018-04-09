@@ -192,23 +192,25 @@ class Smartgrid {
     public function render_grid()
     {
         $this->set_debug_time('render_start_time');
-        $paging_html = ($this->_config_paging_enabled === true && $this->_total_rows > $this->_config_page_size) ? '<div class="panel-body no-margin" style="overflow: hidden;">'.$this->get_toolbar().'</div>' : '';
+        $paging_html = ($this->_config_paging_enabled === true && $this->_total_rows > $this->_config_page_size) ? $this->get_toolbar() : '';
         $html = '';
         if($this->_dataset && count($this->_dataset) > 0)
         {
-            $html .= '<div class="sg-panel">';
+            $html .= '<div class="d-flex justify-content-between">';
+            $html .= '<a href="'.$this->_current_url.'/agregar" style="margin-bottom: 1em" class="btn btn-success justify-content-start"><i class="fas fa-plus"></i> Agregar</a>';
             $html .= ($this->_config_toolbar_position == 'top' || $this->_config_toolbar_position == 'both') ? $paging_html : '';
-            $html .= '<div class="sg-body no-padding">';
+            $html .= '</div>';
+            $html .= '<div class="card">';
+            $html .= '<div class="table-responsive">';
             $html .= '<table id="sg-table" class="table table-hover table-outline table-vcenter text-nowrap card-table" cellspacing="0" width="100%">';
             $html .= $this->render_header();
             $html .= $this->render_rows();
-            $html .= '</table></div>';
+            $html .= '</table></div></div>';
             $html .= ($this->_config_toolbar_position == 'bottom' || $this->_config_toolbar_position == 'both') ? $paging_html : '';
-            $html .= '</div>';
         }
         else
         {
-            $html .= '<div class="panel panel-default"><div class="panel-body">No hay datos para mostrar</div></div>';    
+            $html .= '<div class="card">No hay datos para mostrar</div>';    
         }
         
         if($this->_config_debug_mode === true){
@@ -329,10 +331,10 @@ class Smartgrid {
             if($this->CI->input->get_post($this->_config_grid_name.'order', TRUE) == $field){
               if($this->CI->input->get_post($this->_config_grid_name.'sort', TRUE) == 0){
                 $sort = 1;
-                $angle = ' <i class="fa fa-angle-up"></i>';
+                $angle = ' <i class="fas fa-angle-up"></i>';
               }else{
                 $sort = 0;
-                $angle = ' <i class="fa fa-angle-down"></i>';
+                $angle = ' <i class="fas fa-angle-down"></i>';
               }
             }
 //
@@ -530,27 +532,34 @@ class Smartgrid {
             $paging_html .= '<input type="hidden" name="'.$key.'" value="'.$val.'" />';
         }
 
-        $css_btn_prev = ($this->_page_number == 1) ? 'disabled' : '';
-        $css_btn_next = ($this->_page_number == $this->_total_page) ? 'disabled' : '';
+        $prev_disabled = ($this->_page_number == 1) ? ' disabled' : '';
+        $next_disabled = ($this->_page_number == $this->_total_page) ? ' disabled' : '';
         
         $prev_button_type = ($this->_page_number == 1) ? 'button' : 'submit';
         $next_button_type = ($this->_page_number == $this->_total_page) ? 'button' : 'submit';
 
-        $paging_html .= '<div class="sg-toolbar pull-left">Mostrando del '.($this->_page_row_start + 1).' al '.($this->_page_row_start + $this->_page_row_count).' de '.$this->_total_rows.'</div>';   
-         
-        $paging_html .= '<div class="btn-group pull-right" role="group">'; 
-        $paging_html .= '<button type="'.$prev_button_type.'" name="'.$this->_config_grid_name.'page" value="1" class="btn btn-default btn-sm '.$css_btn_prev.'" title="Ir a la primer página"><i class="fa fa-angle-double-left"></i></button>'; 
-        $paging_html .= '<button type="'.$prev_button_type.'" name="'.$this->_config_grid_name.'page" value="'.$previous_page_number.'" class="btn btn-default btn-sm '.$css_btn_prev.'" title="Ir a la página anterior"><i class="fa fa-angle-left"></i></button>'; 
-
-        $paging_html .= '<button type="button" class="btn btn-default btn-sm dropdown-toggle disabled" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Página '.$this->_page_number.' de '.$this->_total_page.'</button>';
-    
-        $paging_html .= '<button type="'.$next_button_type.'" name="'.$this->_config_grid_name.'page" value="'.$next_page_number.'" class="btn btn-default btn-sm '.$css_btn_next.'" title="Ir a la siguiente página"><i class="fa fa-angle-right"></i></button>'; 
-        $paging_html .= '<button type="'.$next_button_type.'" name="'.$this->_config_grid_name.'page" value="'.$this->_total_page.'" class="btn btn-default btn-sm '.$css_btn_next.'" title="Ir a la última página"><i class="fa fa-angle-double-right"></i></button>'; 
-        $paging_html .= '</div>';
+        $paging_html .= '<nav>
+            <ul class="pagination justify-content-end">
+            <li class="page-item'.$prev_disabled.'">
+              <button type="'.$prev_button_type.'" name="'.$this->_config_grid_name.'page" value="'.$previous_page_number.'" class="page-link"><i class="fas fa-angle-left"></i></button>
+            </li>';
+            for($i = 1; $i <= $this->_total_page; $i++){
+                $active = ($i == $this->_page_number) ? " active" : "";
+                $button_type = ($i == $this->_page_number) ? "button" : "submit";
+                $paging_html .= '<li class="page-item'.$active.'">
+                    <button type="'.$button_type.'" name="'.$this->_config_grid_name.'page" value="'.$i.'" class="page-link">'.$i.'</button>
+                </li>';
+            }
+            $paging_html .= '<li class="page-item'.$next_disabled.'">
+              <button type="'.$next_button_type.'" name="'.$this->_config_grid_name.'page" value="'.$next_page_number.'" class="page-link"><i class="fas fa-angle-right"></i></button>
+            </li>
+          </ul>
+        </nav>';
         $paging_html .= '</form>';
         return $paging_html;
     }
     
+
     /**
      * get_debug_info
      * 
