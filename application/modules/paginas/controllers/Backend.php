@@ -6,13 +6,7 @@ class Backend extends CI_Controller {
   public function __construct(){
     parent::__construct();
 
-    Admin_helper::is_admin($this->session->userdata('rol_id'));
-
-    $this->load->library('breadcrumbs');
-    $this->breadcrumbs->push('Home', '/backend/');
-
     $this->load->model('paginas_model');
-
     $this->load->helper(array('html', 'url_helper'));
     
     $this->data = array(
@@ -23,10 +17,11 @@ class Backend extends CI_Controller {
   }
 
   public function index(){
+    if(!($this->aauth->is_member('Admin') || $this->aauth->is_allowed($this->session->userdata("id"), 'ver_paginas'))){
+      redirect("/login");
+    }
+
     $this->load->library('Smartgrid');
- 
-    $this->breadcrumbs->push('Paginas', '/backend/paginas');
-    $this->breadcrumbs->show();
 
     $tabla = $this->paginas_model->get_paginas(); 
 
@@ -53,6 +48,10 @@ class Backend extends CI_Controller {
   }
 
   public function agregar(){
+    if(!($this->aauth->is_member('Admin') || $this->aauth->is_allowed($this->session->userdata("id"), 'agregar_paginas'))){
+      redirect("/login");
+    }
+
     $this->load->helper('form');
     $this->load->library('form_validation');
 
@@ -60,10 +59,6 @@ class Backend extends CI_Controller {
     $this->form_validation->set_rules('page-slug', 'URL', 'required');
     $this->form_validation->set_rules('page-content', 'Contenido', 'required');
     $this->form_validation->set_error_delimiters('<span class="help-block">', '</span>');
-
-    $this->breadcrumbs->push('Paginas', '/backend/paginas');
-    $this->breadcrumbs->push('Agregar pagina', '/backend/paginas/agregar');
-    $this->breadcrumbs->show();
 
     if($this->form_validation->run() === TRUE){
       if($id = $this->paginas_model->create_page()){
@@ -77,6 +72,10 @@ class Backend extends CI_Controller {
   }
 
   public function editar($page_id = NULL){
+    if(!($this->aauth->is_member('Admin') || $this->aauth->is_allowed($this->session->userdata("id"), 'editar_paginas'))){
+      redirect("/login");
+    }
+
     $this->load->helper('form');
     $this->load->library('form_validation');
 
@@ -87,11 +86,6 @@ class Backend extends CI_Controller {
 
     $this->data['page_id'] = $page_id;
     $this->data['pagina'] = $this->paginas_model->get_pagina("page_id", $page_id);
-
-    $this->breadcrumbs->push('Paginas', '/backend/paginas');
-    $this->breadcrumbs->push('Editar página', '/backend/paginas');
-    $this->breadcrumbs->push($this->data['pagina']['page_title'], '/backend/paginas/'.$page_id);
-    $this->breadcrumbs->show();
 
     if($this->data['pagina'] === NULL){
       $this->data['alert'] = array('type' => 'bg-danger', 'text' => 'La pagina no se encuentra.');

@@ -29,7 +29,7 @@
   <div class="col-md-3">
     <div class="card">
       <div class="card-header">
-        <i class="fa fa-cog"></i> Opciones
+        Opciones
       </div>
       <div class="card-body">
       Lorem ipsum dolor sit amet, consectetuer adipiscing elit.

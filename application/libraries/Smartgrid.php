@@ -197,7 +197,7 @@ class Smartgrid {
         if($this->_dataset && count($this->_dataset) > 0)
         {
             $html .= '<div class="d-flex justify-content-between">';
-            $html .= '<a href="'.$this->_current_url.'/agregar" style="margin-bottom: 1em" class="btn btn-success justify-content-start"><i class="fas fa-plus"></i> Agregar</a>';
+            $html .= '<a href="'.base_url(uri_string()).'/agregar" style="margin-bottom: 1em" class="btn btn-success justify-content-start"><i class="fas fa-plus"></i> Agregar</a>';
             $html .= ($this->_config_toolbar_position == 'top' || $this->_config_toolbar_position == 'both') ? $paging_html : '';
             $html .= '</div>';
             $html .= '<div class="card">';
@@ -210,7 +210,10 @@ class Smartgrid {
         }
         else
         {
-            $html .= '<div class="card">No hay datos para mostrar</div>';    
+            $html .= '<div class="d-flex justify-content-between">';
+            $html .= '<a href="'.base_url(uri_string()).'/agregar" style="margin-bottom: 1em" class="btn btn-success justify-content-start"><i class="fas fa-plus"></i> Agregar</a>';
+            $html .= '</div>';
+            $html .= '<div class="card"><div class="card-body">No hay datos para mostrar</div></div>';
         }
         
         if($this->_config_debug_mode === true){

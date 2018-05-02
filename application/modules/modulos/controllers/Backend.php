@@ -5,11 +5,6 @@ class Backend extends CI_Controller {
 
   public function __construct(){
     parent::__construct();
-    
-    Admin_helper::is_admin($this->session->userdata('rol_id'));
-
-    $this->load->library('breadcrumbs');
-    $this->breadcrumbs->push('Home', '/backend/');
 
     $this->load->helper('html');
     $this->load->helper('url_helper');
@@ -17,13 +12,16 @@ class Backend extends CI_Controller {
     
     $this->data = array(
       "modulo"=> "modulos",
-      "title" => 'Administrar módulos',
-      "menu"  => menu_backend('Módulos')
+      "title" => 'Administrar módulos'
     );
   }
 
 
   public function index(){
+    if(!($this->aauth->is_member('Admin') || $this->aauth->is_allowed($this->session->userdata("id"), 'ver_modulos'))){
+      redirect("/login");
+    }
+
     $modulos = array();
     $map = directory_map('./application/modules/', 1);
     foreach ($map as $key => $value) {
@@ -40,9 +38,6 @@ class Backend extends CI_Controller {
         array_push($modulos, $array);
       }
     }
-
-    $this->breadcrumbs->push('Modulos', '/backend/modulos/');
-    $this->breadcrumbs->show();
 
     $this->data['modulos'] = $modulos;
     $this->data['content'] = $this->load->view('../../views/ver_modulos', $this->data, true);
