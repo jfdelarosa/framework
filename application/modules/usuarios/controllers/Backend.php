@@ -79,13 +79,16 @@ class Backend extends CI_Controller {
     if(!($this->aauth->is_member('Admin') || $this->aauth->is_allowed($this->session->userdata("id"), 'editar_usuarios'))){
       redirect("/login");
     }
+    $this->db->select('*');
+    $this->db->where("username", $username);
+    $return = $this->db->get('aauth_users');
+    $user = $return->result_array()[0];
 
-    $id = 2;
     $permisos = array();
     $perms = json_decode(json_encode($this->aauth->list_perms()), true);
     foreach ($perms as $perm) {
       $perm['allowed'] = false;
-      if($this->aauth->is_allowed($perm['name'], $id)){
+      if($this->aauth->is_allowed($perm['name'], $user['id'])){
         $perm['allowed'] = true;
       }
       array_push($permisos, $perm);

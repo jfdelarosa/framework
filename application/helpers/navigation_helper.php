@@ -28,7 +28,7 @@ if ( ! function_exists('menu_backend'))
         if(!array_key_exists("badge", $item)){ $item['badge'] = ""; }
         
         $url = ($item['url']) ? $item['url'] : "javascript:void(0)";
-        $current = ($item['url'] == uri_string() || ($sel == "home")) ? ' active' : '';
+        $current = ($item['url'] == uri_string() || ($item['url'] == "/backend/" && uri_string() == "backend")) ? ' active' : '';
         $dropdown = (array_key_exists("submenu", $item)) ? ' dropdown' : '';
         $dropdownToggle = (array_key_exists("submenu", $item)) ? 'data-toggle="dropdown"' : '';
         $menu .= '  <li class="nav-item'.$dropdown.'">'."\n";
