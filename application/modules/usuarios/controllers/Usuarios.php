@@ -21,28 +21,11 @@ class Usuarios extends CI_Controller {
       $username = $this->input->post('username');
       $password = $this->input->post('password');
 
-      if ($this->aauth->login($username, $password)){
+      if($this->aauth->login($username, $password, true)){
         redirect('../backend');
       }else{
         $this->data['error'] = "error";
       }
-
-      // $check_user = $this->users_model->login($username, $password);
-
-      // if(is_array($check_user) AND $check_user['error']){
-      //   $this->data['error'] = $check_user['mensaje'];
-      // }else{
-      //   $user_data = $this->users_model->get_data($check_user);
-      //   $data = array(
-      //     'is_logged_in'  =>  TRUE,
-      //     'user_id'       =>  $check_user,
-      //     'rol_id'        =>  $user_data->rol_id,
-      //     'user_username' =>  $user_data->user_username
-      //   );
-
-      //   $this->session->set_userdata($data);
-      //   redirect('../backend');
-      // }
     }
 
     $this->load->view('../../views/login', $this->data);

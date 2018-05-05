@@ -26,7 +26,7 @@ class Backend extends CI_Controller {
   }
 
   public function index(){
-    if(!($this->aauth->is_member('Admin') || $this->aauth->is_allowed($this->session->userdata("id"), 'ver_usuarios'))){
+    if(!($this->aauth->is_member('Admin') || $this->aauth->control('ver_usuarios'))){
       redirect("/login");
     }
 
@@ -47,7 +47,7 @@ class Backend extends CI_Controller {
   }
 
   public function agregar(){
-    if(!($this->aauth->is_member('Admin') || $this->aauth->is_allowed($this->session->userdata("id"), 'agregar_usuarios'))){
+    if(!($this->aauth->is_member('Admin') || $this->aauth->control('agregar_usuarios'))){
       redirect("/login");
     }
 
@@ -76,7 +76,7 @@ class Backend extends CI_Controller {
   }
 
   public function editar($username){
-    if(!($this->aauth->is_member('Admin') || $this->aauth->is_allowed($this->session->userdata("id"), 'editar_usuarios'))){
+    if(!($this->aauth->is_member('Admin') || $this->aauth->control('editar_usuarios'))){
       redirect("/login");
     }
     $this->db->select('*');
@@ -100,7 +100,7 @@ class Backend extends CI_Controller {
   }
 
   public function permisos(){
-    if(!($this->aauth->is_member('Admin') || $this->aauth->is_allowed($this->session->userdata("id"), 'ver_permisos'))){
+    if(!($this->aauth->is_member('Admin') || $this->aauth->control('ver_permisos'))){
       redirect("/login");
     }
     $a = $this->aauth->list_perms();

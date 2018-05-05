@@ -7,8 +7,8 @@ class Paginas_model extends CI_Model {
   
   public function get_paginas(){
     $query = $this->db->query('SELECT *,
-      (SELECT user_username FROM users WHERE user_id = pages.page_created_by) AS created_by,
-      (SELECT user_username FROM users WHERE user_id = pages.page_edited_by) AS edited_by
+      (SELECT username FROM aauth_users WHERE id = pages.page_created_by) AS created_by,
+      (SELECT username FROM aauth_users WHERE id = pages.page_edited_by) AS edited_by
       FROM pages
       WHERE page_status = 1
       ORDER BY page_edited DESC');
@@ -25,7 +25,7 @@ class Paginas_model extends CI_Model {
   public function create_page(){
     $data = array(
       'page_title'      => $this->input->post('page-title'),
-      'page_created_by' => $this->session->userdata('user_id'),
+      'page_created_by' => $this->aauth->get_user_id(),
       'page_slug'       => $this->input->post('page-slug'),
       'page_content'    => $this->input->post('page-content')
     );
@@ -39,7 +39,7 @@ class Paginas_model extends CI_Model {
       'page_slug'      => $this->input->post('page-slug'),
       'page_content'   => $this->input->post('page-content'),
       'page_edited'    => date('Y-m-d H:i:s', time()),
-      'page_edited_by' => $this->session->userdata('user_id')
+      'page_edited_by' => $this->aauth->get_user_id()
     );
     $this->db->set('page_edited_count', 'page_edited_count+1', FALSE);
     $this->db->where('page_id', $page_id);

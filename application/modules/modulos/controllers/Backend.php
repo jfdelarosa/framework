@@ -16,18 +16,20 @@ class Backend extends CI_Controller {
     );
   }
 
-
   public function index(){
-    if(!($this->aauth->is_member('Admin') || $this->aauth->is_allowed($this->session->userdata("id"), 'ver_modulos'))){
+    if(!($this->aauth->is_member('Admin') || $this->aauth->control('ver_modulos'))){
       redirect("/login");
     }
+    
+    $this->load->library('Smartgrid');
+
 
     $modulos = array();
     $map = directory_map('./application/modules/', 1);
     foreach ($map as $key => $value) {
       if(strpos($value, '.') === FALSE){
-        if($string = @file_get_contents('./application/modules/'.$value.'info.json')){
-          $array = json_decode($string, true);
+        if(file_exists('./application/modules/'.$value.'index.php')){
+          $array = include('./application/modules/'.$value.'index.php');
         }else{
           $array = array(
             "nombre"      => rtrim($value, '\\'),
@@ -39,7 +41,18 @@ class Backend extends CI_Controller {
       }
     }
 
-    $this->data['modulos'] = $modulos;
+    $columns = array(
+      "nombre"      => array("header" => "Nombre",      "type" => "custom", "field_data" => '<div>{nombre}</div><div class="small text-muted">Versión {version}</div>'),
+      "descripcion" => array("header" => "Descripción", "type" => "label"),
+      "version"     => array("header" => "Opciones",    "type" => "custom", "field_data" => '
+      <a href="/paginas/{nombre}" target="_BLANK" class="btn btn-sm btn-primary"><i class="fas fa-eye"></i></a>
+      <a href="paginas/editar/{nombre}" class="btn btn-sm btn-success"><i class="far fa-edit"></i></a>
+      <button class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></button>')
+    );  
+
+    $this->smartgrid->set_grid($modulos, $columns);
+    $this->data['tabla'] = $this->smartgrid->render_grid();
+
     $this->data['content'] = $this->load->view('../../views/ver_modulos', $this->data, true);
     $this->load->view(TEMPLATE_URL, $this->data);
   }

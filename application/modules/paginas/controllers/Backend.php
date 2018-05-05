@@ -17,7 +17,7 @@ class Backend extends CI_Controller {
   }
 
   public function index(){
-    if(!($this->aauth->is_member('Admin') || $this->aauth->is_allowed($this->session->userdata("id"), 'ver_paginas'))){
+    if(!($this->aauth->is_member('Admin') || $this->aauth->control('ver_paginas'))){
       redirect("/login");
     }
 
@@ -48,7 +48,7 @@ class Backend extends CI_Controller {
   }
 
   public function agregar(){
-    if(!($this->aauth->is_member('Admin') || $this->aauth->is_allowed($this->session->userdata("id"), 'agregar_paginas'))){
+    if(!($this->aauth->is_member('Admin') || $this->aauth->control('agregar_paginas'))){
       redirect("/login");
     }
 
@@ -72,7 +72,7 @@ class Backend extends CI_Controller {
   }
 
   public function editar($page_id = NULL){
-    if(!($this->aauth->is_member('Admin') || $this->aauth->is_allowed($this->session->userdata("id"), 'editar_paginas'))){
+    if(!($this->aauth->is_member('Admin') || $this->aauth->control('editar_paginas'))){
       redirect("/login");
     }
 

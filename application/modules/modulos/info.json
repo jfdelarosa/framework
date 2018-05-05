@@ -1,6 +1,0 @@
-{
-  "nombre": "modulos",
-  "descripcion": "Administra los módulos instalados.",
-  "require": ["users"],
-  "version": 0.1
-}
