@@ -13,7 +13,12 @@
         </div>
         <div class="form-group">
           <label class="form-label" for="page-slug">URL</label>
-          <input class="form-control" name="page-slug" id="page-slug" value="<?php echo set_value('page-slug'); ?>" placeholder="Ingresa la url de la pagina." />
+          <div class="input-group">
+            <span class="input-group-prepend" id="basic-addon3">
+              <span class="input-group-text"><?php echo base_url("paginas/"); ?></span>
+            </span>
+            <input class="form-control" type="text" name="page-slug" id="page-slug" value="<?php echo set_value('page-slug'); ?>" placeholder="Ingresa la url de la pagina.">
+          </div>
           <?php echo form_error('page-slug'); ?>
         </div>
         <div class="form-group">

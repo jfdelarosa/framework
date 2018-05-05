@@ -17,11 +17,21 @@ class Backend extends CI_Controller {
   }
 
   public function install(){
-    $this->aauth->create_perm('ver_usuarios');
-    $this->aauth->create_perm('agregar_usuarios');
-    $this->aauth->create_perm('editar_usuarios');
-    $this->aauth->create_perm('ver_permisos');
-    $this->aauth->create_perm('editar_permisos');
+    $permisos = array(
+      array("ver_paginas" => ""),
+      array("editar_paginas" => ""),
+      array("agregar_paginas" => ""),
+      array("ver_usuarios" => ""),
+      array("editar_usuarios" => ""),
+      array("agregar_usuarios" => ""),
+      array("ver_modulos" => ""),
+      array("ver_permisos" => "")
+    );
+
+    foreach($permisos as $permiso => $desc){
+      $this->aauth->create_perm($permiso, $desc);
+    }
+
     redirect("/backend/usuarios");
   }
 
