@@ -74,6 +74,7 @@ abstract class CI_DB_forge {
 	 */
 	public $primary_keys	= array();
 
+	public $foreign_keys	= array();
 	/**
 	 * Database character set
 	 *
@@ -267,6 +268,23 @@ abstract class CI_DB_forge {
 		return $this;
 	}
 
+	public function add_foreign_key($key = '')
+	{
+		if (empty($key))
+		{
+			show_error('Key information is required for that operation.');
+		}
+		if(is_array($key)){
+			foreach ($key as $k => $v) {
+				$this->foreign_keys[] = $v;
+			}
+		}else{
+			$this->foreign_keys[] = $key;
+		}
+
+
+		return $this;
+	}
 	// --------------------------------------------------------------------
 
 	/**
@@ -401,7 +419,8 @@ abstract class CI_DB_forge {
 		}
 
 		$columns = implode(',', $columns)
-				.$this->_process_primary_keys($table);
+				.$this->_process_primary_keys($table)
+				.$this->_process_foreign_keys();
 
 		// Are indexes created from within the CREATE TABLE statement? (e.g. in MySQL)
 		if ($this->_create_table_keys === TRUE)
@@ -943,6 +962,38 @@ abstract class CI_DB_forge {
 		{
 			$field['auto_increment'] = ' AUTO_INCREMENT';
 		}
+	}
+
+	protected function _process_foreign_keys()
+	{
+		$sql = '';
+
+		// If we have any foreign keys to process...
+		if (count($this->foreign_keys) > 0)
+		{
+			foreach ($this->foreign_keys as $foreign_key)
+			{
+				//  If this is an array, construct the statement
+				if (is_array($foreign_key))
+				{
+					// Initialize update and delete actions with default values
+					$vars = extract(array_merge(array(
+					'delete' => 'NO ACTION', 'update' => 'NO ACTION'), $foreign_key));
+
+					// Construct the SQL to add the foreign constraint
+					$sql .= ", \n\tCONSTRAINT FOREIGN KEY (".$this->db->escape_identifiers($field).') '
+						.' REFERENCES '.$this->db->escape_identifiers($foreign_table
+						.'('.$this->db->escape_identifiers($foreign_field).')')
+						.' ON DELETE '.strtoupper($delete).' ON UPDATE '.strtoupper($update).' ';
+
+				} else {
+					// Otherwise add the string statement as-is
+					$sql .= ', '.$foreign_key.' ';
+				}
+			}
+		}
+
+		return $sql;
 	}
 
 	// --------------------------------------------------------------------
